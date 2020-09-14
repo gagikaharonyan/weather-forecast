@@ -3,7 +3,7 @@ import _axios from 'axios';
 import {isDevelopment} from './utils';
 
 const axios = _axios.create({
-    baseURL: 'http://dataservice.accuweather.com/',
+    baseURL: 'https://dataservice.accuweather.com/',
     timeout: 1000,
 });
 
