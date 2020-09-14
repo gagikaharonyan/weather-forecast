@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react';
+import CurrentCondition from './components/CurrentConditions';
+import ShowForecastBtn from './components/ShowForecastBtn';
+import UnitSwitcherBtn from './components/UnitSwitcherBtn';
+import Forecast from './components/Forecast';
+import {getCurrentCondition} from './api'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [isShowForcastClicked, setIsShowForcastClicked] = useState<boolean>(false);
+    const [currentCondition, setCurrentCondition] = useState<{isLoaded: boolean, res: Array<any>}>({isLoaded: false, res: []});
+    const data = currentCondition.isLoaded? currentCondition.res[0]: {};
+
+    const handleShowForcastClick = () => {
+        setIsShowForcastClicked(prevState => !prevState)
+    }
+
+    useEffect(() => {
+        getCurrentCondition((res) => {
+            setCurrentCondition({isLoaded: true, res})
+        })
+    }, [])
+    
+    return (
+        <>
+            <UnitSwitcherBtn/>
+            {currentCondition.isLoaded
+            ?<CurrentCondition
+                location="Armenia, Yerevan"
+                dateTime={data.LocalObservationDateTime}
+                weatherIcon={data.WeatherIcon}
+                temp={{C: data.Temperature.Metric.Value, F: data.Temperature.Imperial.Value}}
+                weatherText={data.WeatherText}
+            />
+            :<span>Loading...</span>}
+            <ShowForecastBtn 
+                isClicked={isShowForcastClicked}
+                onClick={handleShowForcastClick}
+             />
+            {isShowForcastClicked &&
+            <Forecast/>}
+        </>
+    );
 }
 
 export default App;

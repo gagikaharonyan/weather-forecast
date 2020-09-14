@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './main.sass';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import {SiteSettingsProvider} from './SiteSettingsContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <SiteSettingsProvider>
+      <App />
+    </SiteSettingsProvider>    
   </React.StrictMode>,
   document.getElementById('root')
 );
