@@ -1,20 +1,20 @@
-import React, {useContext} from "react";
+import React  from "react";
 import styles from './UnitSwitcherBtn.module.sass';
-import {SiteSettingsContext} from '../../SiteSettingsContext';
+import {ContextType} from '../../AppSettingsContext';
+import withAppSettings from '../../hocs/withAppSettings';
 
 
-const UnitSwitcherBtn: React.FunctionComponent<{}> = () => {
-    const settings = useContext(SiteSettingsContext);
+const UnitSwitcherBtn: React.FunctionComponent<{appSettings?: ContextType}> = ({appSettings}) => {
 
     const handleBtnClick = () => {
-        settings.setUnit(prev => prev === 'C' ? 'F' : 'C')
+        appSettings!.setUnit(prev => prev === 'C' ? 'F' : 'C')
     }
 
     return (
         <button className={styles.root} onClick={handleBtnClick}>
-            {settings.unit}
+            {appSettings!.unit  === 'C' ? 'F' : 'C'}
         </button>  
     );
 }
 
-export default UnitSwitcherBtn;
+export default withAppSettings(UnitSwitcherBtn);

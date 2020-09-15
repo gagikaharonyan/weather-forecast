@@ -1,14 +1,23 @@
 import React, {useState, useEffect} from 'react';
 import CurrentCondition from './components/CurrentConditions';
 import ShowForecastBtn from './components/ShowForecastBtn';
-import UnitSwitcherBtn from './components/UnitSwitcherBtn';
+import ButtonBar from './components/ButtonBar';
 import Forecast from './components/Forecast';
-import {getCurrentCondition} from './api'
+import {getCurrentCondition} from './api';
+import withAppSettings from './hocs/withAppSettings';
+import {ContextType as appSettingsType} from './AppSettingsContext';
 
-function App() {
+const App:React.FC<{appSettings?: appSettingsType}> = ({appSettings}) => {
     const [isShowForcastClicked, setIsShowForcastClicked] = useState<boolean>(false);
     const [currentCondition, setCurrentCondition] = useState<{isLoaded: boolean, res: Array<any>}>({isLoaded: false, res: []});
     const data = currentCondition.isLoaded? currentCondition.res[0]: {};
+
+    if(appSettings?.theme === 'DARK') {
+        document.body.classList.add('dark-theme');
+    } else {
+        document.body.classList.remove('dark-theme');
+    }
+    
 
     const handleShowForcastClick = () => {
         setIsShowForcastClicked(prevState => !prevState)
@@ -22,7 +31,7 @@ function App() {
     
     return (
         <>
-            <UnitSwitcherBtn/>
+            <ButtonBar/>
             {currentCondition.isLoaded
             ?<CurrentCondition
                 location="Armenia, Yerevan"
@@ -42,4 +51,4 @@ function App() {
     );
 }
 
-export default App;
+export default withAppSettings(App);

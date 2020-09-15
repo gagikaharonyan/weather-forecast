@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import './main.sass';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {SiteSettingsProvider} from './SiteSettingsContext';
+import {AppSettingsProvider} from './AppSettingsContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <SiteSettingsProvider>
-      <App />
-    </SiteSettingsProvider>    
+    <AppSettingsProvider>
+        <App/>
+    </AppSettingsProvider>    
   </React.StrictMode>,
   document.getElementById('root')
 );

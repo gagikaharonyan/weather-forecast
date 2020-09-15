@@ -1,9 +1,10 @@
-import React, {useContext} from "react";
+import React from "react";
 import styles from "./CurrentConditions.module.sass";
 import {
    getImageFromNumber as getImage,
    dateFormatConverter as getDate, } from "../../utils";
-import {SiteSettingsContext} from '../../SiteSettingsContext';
+import {ContextType as appSettings} from '../../AppSettingsContext';
+import withAppSettings from '../../hocs/withAppSettings'
 
 type props = {
   location: string;
@@ -11,12 +12,11 @@ type props = {
   weatherIcon: number;
   temp: {C: number, F: number};
   weatherText: string;
+  appSettings?: appSettings | undefined;
 };
 
 const CurrentConditons: React.FunctionComponent<props> = (props) => {
-  const { location, dateTime, weatherIcon, temp, weatherText } = props;
-
-  const settings = useContext(SiteSettingsContext);
+  const { appSettings, location, dateTime, weatherIcon, temp, weatherText } = props;
 
   return (
     <div className={styles.root}>
@@ -30,8 +30,8 @@ const CurrentConditons: React.FunctionComponent<props> = (props) => {
           <img src={getImage(weatherIcon)} alt="weather"></img>
         </div>
         <div className={styles.temp}>
-          <span>{temp[settings.unit]}</span>
-          <span>{settings.unit}</span>
+          <span>{temp[appSettings!.unit]}</span>
+          <span>{appSettings!.unit}</span>
         </div>
       </div>
       <span className={styles.weatherText}>{weatherText}</span>
@@ -39,4 +39,4 @@ const CurrentConditons: React.FunctionComponent<props> = (props) => {
   );
 };
 
-export default CurrentConditons;
+export default withAppSettings<props>(CurrentConditons);

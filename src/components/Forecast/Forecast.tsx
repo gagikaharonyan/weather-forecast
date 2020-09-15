@@ -1,12 +1,12 @@
-import React, {useContext} from "react";
+import React from "react";
 import styles from "./Forecast.module.sass";
 import useGetForecastService from "../../hooks/useGetForecastService";
 import ForecastCard from "../ForecastCard";
-import {SiteSettingsContext} from '../../SiteSettingsContext';
+import {ContextType} from '../../AppSettingsContext';
+import withAppSettings from '../../hocs/withAppSettings';
 
-const Forecast: React.FunctionComponent<{}> = () => {
-  const settings = useContext(SiteSettingsContext);
-  const service = useGetForecastService(settings.unit);
+const Forecast: React.FunctionComponent<{appSettings?: ContextType}> = (props) => {
+  const service = useGetForecastService(props.appSettings!.unit);
 
   return (
     <div className={styles.root}>
@@ -34,4 +34,4 @@ const Forecast: React.FunctionComponent<{}> = () => {
   );
 };
 
-export default Forecast;
+export default withAppSettings(Forecast);
